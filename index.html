@@ -3,7 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/x-icon" href="https://avatars.githubusercontent.com/u/86991447">
   <title>Practice - Push Notifications</title>
+
+  <meta name="description" content="App sencilla en JavaScript para practicar notificaciones push en el navegador. Incluye botones para contar e interacciones visuales." />
+  <meta name="keywords" content="push notifications, javascript, html, notification api, web app, contador, front-end, práctica, web notifications, browser" />
+  <meta name="author" content="braiidev" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Push Notifications Counter" />
+  <meta property="og:description" content="Contador interactivo con notificaciones push para practicar JavaScript puro." />
+  <meta property="og:image" content="https://raw.githubusercontent.com/braiidev/push-notification/main/files/banner-short.png" />
+  <meta property="og:url" content="https://braiidev.github.io/push-notifications/" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Push Notifications Counter" />
+  <meta name="twitter:description" content="App para practicar la Notification API en JavaScript. Contador con notificaciones dinámicas." />
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/braiidev/push-notification/main/files/banner-short.png" />
+
+  <link rel="canonical" href="https://braiidev.github.io/push-notifications/" />
 </head>
 <body>
   <style>
@@ -89,7 +110,7 @@
       * @param {int} spawn - Time to erase message
       * @return new Notification
     */
-    function Notifier(message, spawn = 5){
+    function Notifier(message, spawn = 3){
       if (Notification.permission === "denied") return alert(message);
       const n = new Notification("Push Notification API", {body: message, tag: "Test"});
       if (spawn === 0) return n
@@ -111,8 +132,8 @@
         }
       })
     
+    let interval;
     addEventListener("visibilitychange", e=>{
-      let interval;
       if(document.visibilityState === "hidden"){
         let timer = 10;
         interval = setInterval(()=>{
@@ -121,7 +142,7 @@
           if (timer==0) {
             clearInterval(interval)
             counter = 0;
-            // window.close()
+            window.close()
           }
         },500);
       }else{
