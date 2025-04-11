@@ -1,0 +1,133 @@
+<!DOCTYPE>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice - Push Notifications</title>
+</head>
+<body>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      width : 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      align-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      background-color: #101035;
+      color: #efefef;
+      padding: 0 60px;
+    }
+    button {
+      width: 200px;
+      height: 50px;
+      font-size: 20px;
+      font-weight: bold;
+      background: #0075ff;
+      color: #afafaf;
+      cursor: pointer;
+      border: none;
+      border-radius: 0;
+    }
+    button:hover{
+        background: #0090f0;
+        color: #fff;
+    }
+    button:active{
+        background: #0060e0e0;
+        color: #eee;
+    }
+
+  </style>
+  
+  <button id="reset">Reset</button>
+  <button id="decrecement">Decrement</button>
+  <button id="increment">Increment</button>
+    
+  <script defer>
+    const $reset = document.querySelector("button#reset");
+    const $decrecement = document.querySelector("button#decrecement");
+    const $increment = document.querySelector("button#increment");
+
+    /* -- This code call new notification when clicking buttons (uncomment to test)
+    Notification.requestPermission().then(perm => {
+      if (perm === "granted"){
+        let counter = 0;
+        $increment.addEventListener("click", () => {
+          counter = counter + 1;
+          new Notification(`Increment counter: ${counter}.`);
+        });
+
+        $decrecement.addEventListener("click", () => {
+          counter = counter - 1;
+          new Notification(`Decrement counter: ${counter}.`);
+        });
+
+        $reset.addEventListener("click", () => {
+          counter = 0;
+          new Notification(`Reset counter: ${counter}.`);
+        });
+      }else{
+        alert("You need give me permission to test Notifications.");
+      }
+    })
+    */
+
+
+    let counter = 0;
+    /** 
+      * This function send notification and erase in X seconds
+      * @function 
+      * @param {string} message - To send as notification
+      * @param {int} spawn - Time to erase message
+      * @return new Notification
+    */
+    function Notifier(message, spawn = 5){
+      if (Notification.permission === "denied") return alert(message);
+      const n = new Notification("Push Notification API", {body: message, tag: "Test"});
+      if (spawn === 0) return n
+      const i = setTimeout(()=>{
+        n.close();
+        clearTimeout(i);
+      }, spawn * 1000)
+      return n
+    }
+
+    $reset.addEventListener("click", () => { counter = 0; Notifier(`Reset counter: ${counter}`);})
+    $decrecement.addEventListener("click", () => { counter = counter - 1; Notifier(`Decrement counter: ${counter}`);})
+    $increment.addEventListener("click", () => { counter = counter + 1; Notifier(`Increment counter: ${counter}`);})
+
+    Notification.requestPermission()
+      .then(perm => {
+        if (perm !== "granted") {
+          alert("Needed permission to use Notifications");
+        }
+      })
+    
+    addEventListener("visibilitychange", e=>{
+      let interval;
+      if(document.visibilityState === "hidden"){
+        let timer = 10;
+        interval = setInterval(()=>{
+          Notifier(`Web closing in ${timer} seconds.`)
+          timer = timer - 1;
+          if (timer==0) {
+            clearInterval(interval)
+            counter = 0;
+            // window.close()
+          }
+        },500);
+      }else{
+        if(interval) clearInterval(interval);
+      }
+    })
+  </script>
+</body>
+</html>
