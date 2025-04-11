@@ -130,25 +130,27 @@
         if (perm !== "granted") {
           alert("Needed permission to use Notifications");
         }
+        else{
+          let interval;
+          addEventListener("visibilitychange", e=>{
+            if(document.visibilityState === "hidden"){
+              let timer = 10;
+              interval = setInterval(()=>{
+                Notifier(`Web closing in ${timer} seconds.`)
+                timer = timer - 1;
+                if (timer==0) {
+                  clearInterval(interval)
+                  counter = 0;
+                  window.close()
+                }
+              },500);
+            }else{
+              if(interval) clearInterval(interval);
+            }
+          })
+        }
       })
     
-    let interval;
-    addEventListener("visibilitychange", e=>{
-      if(document.visibilityState === "hidden"){
-        let timer = 10;
-        interval = setInterval(()=>{
-          Notifier(`Web closing in ${timer} seconds.`)
-          timer = timer - 1;
-          if (timer==0) {
-            clearInterval(interval)
-            counter = 0;
-            window.close()
-          }
-        },500);
-      }else{
-        if(interval) clearInterval(interval);
-      }
-    })
   </script>
 </body>
 </html>
