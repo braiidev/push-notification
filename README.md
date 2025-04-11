@@ -12,7 +12,7 @@ Pequeña app para practicar la **Notification API** del navegador, con un contad
 
 ## 🌐 Demo en vivo
 
-👉 [Abrir en GitHub Pages](https://braiidev.github.io/push-notifications/)
+👉 [Abrir en GitHub Pages](https://braiidev.github.io/push-notification/)
 
 ---
 
